@@ -14,11 +14,17 @@ defmodule PrototypeWeb.PageController do
     This is a paragraph before the markdown code comes. I don't 'need' to drink. I can quit anytime I want! And remember, don't do anything that affects anything, unless it turns out you were supposed to, in which case, for the love of God, don't not do it!
 
     ``` elixir
+    # Elixir
       defmodule Testing do
          def say(something) do
            IO.inspect(something, label: "You said")
          end
       end
+    ```
+
+    ``` sql
+    # SQL
+    SELECT * FROM my_table WHERE id in ['1', '2', '3'];
     ```
 
     """
