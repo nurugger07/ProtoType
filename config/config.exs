@@ -13,9 +13,12 @@ config :prototype,
 # Configures the endpoint
 config :prototype, PrototypeWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "/RxTkTyK09EQL1J0NI7KQK/bAkOuNi5BOqBXDmVlEPUMCgq/SiEyMV1kA6gtaEqP",
+  secret_key_base: System.get_env("PHX_SECRET_BASE_KEY"),
   render_errors: [view: PrototypeWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Prototype.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Prototype.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [
+    signing_salt: System.get_env("PHX_SALT")
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,

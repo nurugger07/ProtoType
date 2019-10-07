@@ -1,6 +1,7 @@
 defmodule PrototypeWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :prototype
 
+  socket "/live", Phoenix.LiveView.Socket
   socket "/socket", PrototypeWeb.UserSocket,
     websocket: true,
     longpoll: false
