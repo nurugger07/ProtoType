@@ -1,2 +1,1 @@
-<%= live_render(@conn, PrototypeWeb.Live.Home) %>
-<%= raw @code %>
+<%= live_render(@conn, PrototypeWeb.Live.PetriDish) %>

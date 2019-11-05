@@ -1,0 +1,42 @@
+<style>
+  .petri-dish-container {
+      position: absolute;
+      border: 1px solid #d3d3d3;
+      background-color: #f1f1f1;
+      width: 500px;
+      height: 500px;
+  }
+  .petri-dish-container .block{
+      display: block;
+      position: absolute;
+      left: 2px;
+      top: -0.1em;
+      z-index: 3;
+  }
+</style>
+
+<h2>Hello, Little World!</h2>
+<i><%= @time %>
+<div class="petri-dish-container">
+  <%= for f <- @food do %>
+    <div class="block food"
+          style="left: <%= f.x %>px;
+                top: <%= f.y %>px;
+                width: <%= f.width %>px;
+                height: <%= f.height %>px;
+                background: <%= f.color %>;
+                border-radius: 5px;
+                "></div>
+  <% end %>
+
+  <%= for o <- @organisms do %>
+    <div class="block space-invader"
+          style="left: <%= o.x %>px;
+                top: <%= o.y %>px;
+                width: <%= o.width %>px;
+                height: <%= o.height %>px;
+                border-radius: <%= o.radius %>px;
+                background: <%= o.color %>;
+                "></div>
+  <% end %>
+</div>
