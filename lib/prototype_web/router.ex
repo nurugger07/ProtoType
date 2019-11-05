@@ -18,5 +18,6 @@ defmodule PrototypeWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/genetics", GeneticController, :index
   end
 end

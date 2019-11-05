@@ -1,1 +1,2 @@
-<%= live_render(@conn, PrototypeWeb.Live.PetriDish) %>
+
+<%= link("Start Experiment", to: "/genetics") %>
