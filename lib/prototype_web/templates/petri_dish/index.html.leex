@@ -18,25 +18,25 @@
 <h2>Hello, Little World!</h2>
 <i><%= @time %>
 <div class="petri-dish-container">
-  <%= for f <- @food do %>
-    <div class="block food"
-          style="left: <%= f.x %>px;
-                top: <%= f.y %>px;
-                width: <%= f.width %>px;
-                height: <%= f.height %>px;
-                background: <%= f.color %>;
-                border-radius: 5px;
-                "></div>
-  <% end %>
-
-  <%= for o <- @organisms do %>
-    <div class="block space-invader"
-          style="left: <%= o.x %>px;
-                top: <%= o.y %>px;
-                width: <%= o.width %>px;
-                height: <%= o.height %>px;
-                border-radius: <%= o.radius %>px;
-                background: <%= o.color %>;
-                "></div>
+  <%= for o <- @objects do %>
+    <%= if o.type == :food do %>
+      <div class="block"
+           style="left: <%= o.x %>px;
+                  top: <%= o.y %>px;
+                  width: 5px;
+                  height: 5px;
+                  background: 'green';
+                  border-radius: 5px;
+                  "></div>
+    <% else %>
+      <div class="block"
+           style="left: <%= o.x %>px;
+                  top: <%= o.y %>px;
+                  width: <%= o.width %>px;
+                  height: <%= o.height %>px;
+                  border-radius: <%= o.radius %>px;
+                  background: <%= o.color %>;
+                  "></div>
+    <% end %>
   <% end %>
 </div>

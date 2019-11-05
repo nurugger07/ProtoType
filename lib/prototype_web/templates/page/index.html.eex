@@ -1,2 +1,1 @@
-
 <%= link("Start Experiment", to: "/genetics") %>
