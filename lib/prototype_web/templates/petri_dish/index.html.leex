@@ -16,7 +16,7 @@
 </style>
 
 <h2>Hello, Little World!</h2>
-<i><%= @time %>
+<i><%= @time %></i>
 <div class="petri-dish-container">
   <%= for o <- @objects do %>
     <%= if o.type == :food do %>
@@ -25,7 +25,7 @@
                   top: <%= o.y %>px;
                   width: 5px;
                   height: 5px;
-                  background: 'green';
+                  background-color: green;
                   border-radius: 5px;
                   "></div>
     <% else %>

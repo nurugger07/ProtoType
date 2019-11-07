@@ -10,7 +10,9 @@ defmodule Prototype.Application do
     children = [
       Prototype.Repo,
       PrototypeWeb.Endpoint,
-      Prototype.PetriDish
+      Prototype.PetriDish,
+      Prototype.FoodGenerator,
+      Prototype.FoodSupervisor,
     ]
     opts = [strategy: :one_for_one, name: Prototype.Supervisor]
     Supervisor.start_link(children, opts)
