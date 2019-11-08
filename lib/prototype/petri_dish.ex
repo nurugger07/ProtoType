@@ -6,6 +6,10 @@ defmodule Prototype.PetriDish do
   """
   use GenServer
 
+  import Prototype.Calculators.CollisionDetection, only: [wall_detected?: 2]
+
+  @bounds %{x: 500, y: 500}
+
   def start_link(_) do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
@@ -34,26 +38,14 @@ defmodule Prototype.PetriDish do
   end
 
   @doc """
-  Create a new object in the dish.
+  Draw an object in the dish.
   Objects must have an id and x/y coordinates to be added to the dish
   """
-  def create(%{id: _, x: x, y: y} = object) when is_integer(x) and is_integer(y) do
-    GenServer.cast(__MODULE__, {:create, object})
+  def draw(%{id: _, x: x, y: y} = object) when is_integer(x) and is_integer(y) do
+    GenServer.cast(__MODULE__, {:draw, object})
   end
 
-  def create(_) do
-    {:error, :invalid_object}
-  end
-
-  @doc """
-  Update an object in the dish.
-  Objects must have an id and x/y coordinates to be updated in the dish
-  """
-  def update(%{id: _, x: x, y: y} = object) when is_integer(x) and is_integer(y) do
-    GenServer.cast(__MODULE__, {:update, object})
-  end
-
-  def update(_) do
+  def draw(_) do
     {:error, :invalid_object}
   end
 
@@ -84,12 +76,13 @@ defmodule Prototype.PetriDish do
     {:reply, Map.get(state, :"#{id}"), state}
   end
 
-  def handle_cast({:create, %{id: id} = organism}, state) do
-    {:noreply, Map.put(state, :"#{id}", organism)}
-  end
-
-  def handle_cast({:update, %{id: id} = organism}, state) do
-    {:noreply, Map.replace!(state, :"#{id}", organism)}
+  def handle_cast({:draw, %{id: id} = organism}, state) do
+    if wall_detected?(organism, @bounds) do
+      Prototype.Organism.bounce(organism)
+      {:noreply, state}
+    else
+      {:noreply, Map.put(state, :"#{id}", organism)}
+    end
   end
 
   def handle_cast({:remove, %{id: id}}, state) do

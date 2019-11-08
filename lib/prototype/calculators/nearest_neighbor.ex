@@ -11,7 +11,7 @@ defmodule Prototype.Calculators.NearestNeighbor do
   Determines the distance between two objects
 
   """
-  def calculate_distance({x1, y1}, {x2, y2}) do
+  def calculate_distance(%{x: x2, y: y2} = neighbor, %{x: x1, y: y1}) do
     x = x2
     |> Kernel.-(x1)
     |> (&(&1 * &1)).()
@@ -20,10 +20,13 @@ defmodule Prototype.Calculators.NearestNeighbor do
     |> Kernel.-(y1)
     |> (&(&1 * &1)).()
 
-    x
-    |> Kernel.+(y)
-    |> :math.sqrt()
-    |> Float.round(5)
+    distance =
+      x
+      |> Kernel.+(y)
+      |> :math.sqrt()
+      |> Float.round(5)
+
+    {neighbor, distance}
   end
 
 end

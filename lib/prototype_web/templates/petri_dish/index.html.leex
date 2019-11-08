@@ -1,42 +1,65 @@
-<style>
-  .petri-dish-container {
-      position: absolute;
-      border: 1px solid #d3d3d3;
-      background-color: #f1f1f1;
-      width: 500px;
-      height: 500px;
-  }
-  .petri-dish-container .block{
-      display: block;
-      position: absolute;
-      left: 2px;
-      top: -0.1em;
-      z-index: 3;
-  }
-</style>
+<h2 class="title">Hello, Little World!</h2>
+<i class="time"><%= @time %></i>
+<div class="page-container">
+  <div class="petri-dish-container">
+    <%= for o <- @objects do %>
+        <%= if o.type == :food do %>
+        <div class="block"
+             style="left: <%= o.x %>px;
+                    top: <%= o.y %>px;
+                    width: <%= o.width %>px;
+                    height: <%= o.height %>px;
+                    border-radius: <%= o.radius %>px;
+                    background-color: green;
+                    "></div>
+        <% else %>
+        <div class="block"
+             style="left: <%= o.x %>px;
+                    top: <%= o.y %>px;
+                    width: <%= o.width %>px;
+                    height: <%= o.height %>px;
+                    border-radius: <%= o.radius %>px;
+                    background-color: <%= o.color %>;
+                    "></div>
+        <% end %>
+        <% end %>
+  </div>
 
-<h2>Hello, Little World!</h2>
-<i><%= @time %></i>
-<div class="petri-dish-container">
-  <%= for o <- @objects do %>
-    <%= if o.type == :food do %>
-      <div class="block"
-           style="left: <%= o.x %>px;
-                  top: <%= o.y %>px;
-                  width: 5px;
-                  height: 5px;
-                  background-color: green;
-                  border-radius: 5px;
-                  "></div>
-    <% else %>
-      <div class="block"
-           style="left: <%= o.x %>px;
-                  top: <%= o.y %>px;
-                  width: <%= o.width %>px;
-                  height: <%= o.height %>px;
-                  border-radius: <%= o.radius %>px;
-                  background: <%= o.color %>;
-                  "></div>
-    <% end %>
-  <% end %>
+</div>
+
+
+<div class="petri-dish-controls">
+  <form action="#" phx-change="update-settings">
+    <div class="form-group">
+      <div class="form-label-group">
+        <label>Max Food Count</label>
+        <input type="text" name="food-count" placeholder="Defaults to 10..." value=<%= @max_food %>>
+        <a href="#" class="button btn-food" phx-click="generate-food">Generate Food</a>
+      </div>
+
+      <div class="form-label-group">
+        <label>Seed Organism Count</label>
+        <input type="text" name="organism-count" placeholder="Defaults to 10..." value=<%= @max_organism %>>
+        <label>Fitness</label>
+        <select name="fitness" style="width: 100%;">
+          <option value="strength">Strength</option>
+          <option value="stamina">Stamina</option>
+          <option value="speed">Speed</option>
+        </select>
+        <a href="#" class="button btn-food" phx-click="generate-organisms">Generate Organisms</a>
+      </div>
+    </div>
+    <br />
+    <br />
+    <br />
+
+    <div class="form-label-group">
+      <a href="#" class="button btn-danger"  phx-click="clear-dish">Kill All</a>
+    </div>
+
+  </form>
+</div>
+
+<div class="status-bar">
+  Status: <%= @status %>
 </div>

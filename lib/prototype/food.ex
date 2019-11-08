@@ -1,6 +1,8 @@
 defmodule Prototype.Food do
   use GenServer, restart: :transient
 
+  require Logger
+
   alias Prototype.{PetriDish, Food}
 
   defstruct [
@@ -9,6 +11,9 @@ defmodule Prototype.Food do
     x: nil, # X coordinate for current location
     y: nil, # Y coordinate for current location
     time_to_spoil: 30_000, # in milliseconds.
+    width: 5,
+    height: 5,
+    radius: 5,
     calories: 3 # How much food will increase stamina 1-5
   ]
 
@@ -25,10 +30,8 @@ defmodule Prototype.Food do
     {:ok, state, {:continue, :sprout}}
   end
 
-  def consumed(%{id: id}) do
-    with pid when is_pid(pid) <- :global.whereis_name(id) do
-      GenServer.stop(pid)
-    end
+  def consumed(%{id: _id} = dna) do
+    remove(dna)
   end
 
   def handle_continue(:sprout, state) do
@@ -50,8 +53,8 @@ defmodule Prototype.Food do
   defp new(%{id: id, bounds: %{x: x, y: y}}) do
     %Food{
       id: id,
-      x: Enum.random(5..(x - 5)),
-      y: Enum.random(5..(y - 5)),
+      x: Enum.random(50..(x - 50)),
+      y: Enum.random(50..(y - 50)),
     }
   end
 
@@ -61,7 +64,7 @@ defmodule Prototype.Food do
   end
 
   defp draw(dna) do
-    PetriDish.create(dna)
+    PetriDish.draw(dna)
     dna
   end
 

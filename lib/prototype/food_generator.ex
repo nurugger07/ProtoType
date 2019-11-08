@@ -9,8 +9,8 @@ defmodule Prototype.FoodGenerator do
     max_count: 0, # Maximum amount of food generated each iteration
     timer: nil, # Holds the timer reference
     frequency: 10_000, # Time between intervals. Defaults to 10 secs
-    delay: nil, # Include a delay between generating food
-    bounds: %{x: 250, y: 250} # the bounds of the petri dish
+    delay: 500, # Include a delay between generating food
+    bounds: %{x: 500, y: 500} # the bounds of the petri dish
   }
 
   def start_link(_) do

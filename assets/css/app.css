@@ -1,3 +1,69 @@
 /* This file is for your main application css. */
 
 @import "./phoenix.css";
+
+body {
+    background-size: 40px 40px;
+    background-image:
+        linear-gradient(to right, #aee5f5 1px, transparent 1px),
+        linear-gradient(to bottom, #aee5f5 1px, transparent 1px);
+}
+
+.title {
+    font-weight: bold;
+    font-size: 48px;
+}
+
+.time {
+    font-size: 24px;
+}
+
+.petri-dish-container {
+    position: absolute;
+    float: left;
+    border: 3px solid #d3d3d3;
+    background-color: #f1f1f1;
+    width: 500px;
+    height: 500px;
+}
+
+.petri-dish-container .block{
+    display: block;
+    position: absolute;
+    top: -0.1em;
+    z-index: 99;
+}
+
+.petri-dish-controls {
+    float: right;
+    border: 3px solid #d3d3d3;
+    background-color: #FFFFFF;
+    padding: 10px;
+    width: 250px;
+    height: 500px;
+}
+
+.btn-organism {
+    width: 100%;
+    background-color: green;
+}
+
+.btn-food {
+    width: 100%;
+    background-color: green;
+}
+
+.btn-danger {
+    width: 100%;
+    background-color: red;
+}
+
+.status-bar {
+    position: absolute;
+    top: 640px;
+    width: 760px;
+    border: 3px solid #d3d3d3;
+    background-color: #FFFFFF;
+    padding: 10px;
+}
+

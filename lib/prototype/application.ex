@@ -13,6 +13,8 @@ defmodule Prototype.Application do
       Prototype.PetriDish,
       Prototype.FoodGenerator,
       Prototype.FoodSupervisor,
+      Prototype.OrganismGenerator,
+      Prototype.OrganismSupervisor
     ]
     opts = [strategy: :one_for_one, name: Prototype.Supervisor]
     Supervisor.start_link(children, opts)
