@@ -38,7 +38,7 @@ defmodule Prototype.Organism.Actions do
         Prototype.Food.consumed(nearest_food)
 
         dna
-        |> Map.put(:current_stamina, dna.current_stamina + (nearest_food.calories * 10))
+        |> Map.put(:current_stamina, dna.current_stamina + (nearest_food.calories * 20))
         |> Map.put(:status, :move)
         |> next_action()
       rescue
@@ -48,7 +48,7 @@ defmodule Prototype.Organism.Actions do
           |> next_action()
       end
     else
-      with [{x, y}| _] <- calculate_path(dna, nearest_food, (10 - dna.minimum_speed)) do
+      with [{x, y}| _] <- calculate_path(dna, nearest_food, dna.current_speed) do
 
         dna
         |> Map.merge(%{x: x, y: y})
@@ -74,7 +74,7 @@ defmodule Prototype.Organism.Actions do
       |> Map.put(:status, :move)
       |> next_action()
     else
-      with [{x, y}| _] <- calculate_path(dna, nearest_organism, (10 - dna.minimum_speed)) do
+      with [{x, y}| _] <- calculate_path(dna, nearest_organism, dna.current_speed) do
 
         dna
         |> Map.merge(%{x: x, y: y})
@@ -109,8 +109,8 @@ defmodule Prototype.Organism.Actions do
   def look_around(%{status: :ready} = dna) do
     {:ok, {nearest_organism, _distance}} =
       PetriDish.all()
-      |> Stream.filter(&(&1.type == :organism))
-      |> Stream.filter(&(FittestMatch.calculate_fitness(&1, dna)))
+      |> Enum.filter(&(&1.type == :organism))
+      |> Enum.filter(&(FittestMatch.calculate_fitness(&1, dna)))
       |> Task.async_stream(NearestNeighbor, :calculate_distance, [dna])
       |> Enum.sort(fn({:ok, {_, d1}}, {:ok, {_, d2}}) -> d1 <= d2 end)
       |> take_first()
@@ -152,8 +152,12 @@ defmodule Prototype.Organism.Actions do
     end
   end
 
-  def can_eat?(nil, _dna), do: false
-  def can_eat?(%{id: id} = food, dna) do
+  defp is_parent?(%{id: id}, %{parents: %{parent1: p1, parent2: p2}}) do
+    id == p1 || id == p2
+  end
+
+  defp can_eat?(nil, _dna), do: false
+  defp can_eat?(%{id: id} = food, dna) do
     with pid when is_pid(pid) <- :global.whereis_name(id) do
       object_detected?(food, dna)
     else
@@ -161,8 +165,8 @@ defmodule Prototype.Organism.Actions do
     end
   end
 
-  def can_mate?(nil, _dna), do: false
-  def can_mate?(%{id: id} = mate, dna) do
+  defp can_mate?(nil, _dna), do: false
+  defp can_mate?(%{id: id} = mate, dna) do
     with pid when is_pid(pid) <- :global.whereis_name(id) do
       object_detected?(mate, dna)
     else

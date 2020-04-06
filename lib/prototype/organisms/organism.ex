@@ -8,7 +8,8 @@ defmodule Prototype.Organism do
   defstruct [
     :id, # used to identify organisms
     :type, # defaults to organism
-    :color, # using hex colors for a range
+    :parents,
+    :color, # using rgb colors
     :width,
     :height,
     :radius,
@@ -18,6 +19,7 @@ defmodule Prototype.Organism do
     :minimum_reproduction_time, # in milliseconds when reached the organism looks to reproduce
     :current_reproduction_time,
     :minimum_speed, # Range from 1-10. Determines steps when moving.
+    :current_speed,
     :minimum_stamina, # Range from 1-100. Determines when organism is hungry. If 0 then the organism dies
     :current_stamina, # Range from 1-100. Determines when organism is hungry. If 0 then the organism dies
     :minimum_strength, # Range from 1-100

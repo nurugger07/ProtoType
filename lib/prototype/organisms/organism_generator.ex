@@ -8,23 +8,9 @@ defmodule Prototype.OrganismGenerator do
   @initial_state %{
     max_count: 0, # Maximum amount of food generated each iteration
     delay: 500, # Include a delay between generating food
-    fitness: :stamina,
+    fitness: :speed,
     bounds: %{x: 500, y: 500} # the bounds of the petri dish
   }
-
-  @colors [
-    "black",
-    "red",
-    "maroon",
-    "olive",
-    "lime",
-    "aqua",
-    "teal",
-    "blue",
-    "navy",
-    "fuchsia",
-    "purple"
-  ]
 
   def start_link(_) do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
@@ -119,19 +105,25 @@ defmodule Prototype.OrganismGenerator do
       :timer.sleep(state.delay)
     end
 
-    strength = Enum.random(1..100)
-    stamina = Enum.random(1..100)
+    strength = Enum.random(1..255)
+    stamina = Enum.random(1..255)
+    speed = Enum.random(1..255)
+    r = Enum.random(1..255)
+    g = Enum.random(1..255)
+    b = Enum.random(1..255)
 
     organism = %Organism{
       id: UUID.uuid4(),
       fitness: state.fitness,
       status: :move,
-      color: Enum.random(@colors),
+      parents: %{parent1: nil, parent2: nil},
+      color: %{r: r, g: g, b: b},
       minimum_strength: strength,
       current_strength: strength + 25,
       minimum_stamina: stamina,
       current_stamina: stamina + 25,
-      minimum_speed: Enum.random(3..10),
+      minimum_speed: adjust_speed(speed),
+      current_speed: speed,
       minimum_reproduction_time: Enum.random(5_000..10_000),
       width: size(strength),
       height: size(strength),
@@ -146,6 +138,7 @@ defmodule Prototype.OrganismGenerator do
   defp call_to_spawn(child) do
     organism = %Organism{
       id: UUID.uuid4(),
+      parents: child.parents,
       fitness: child.fitness,
       status: :move,
       color: child.color,
@@ -153,7 +146,8 @@ defmodule Prototype.OrganismGenerator do
       current_strength: child.strength + 25,
       minimum_stamina: child.stamina,
       current_stamina: child.stamina + 25,
-      minimum_speed: child.speed,
+      minimum_speed: adjust_speed(child.speed),
+      current_speed: child.speed,
       minimum_reproduction_time: child.reproduction_time,
       width: size(child.strength),
       height: size(child.strength),
@@ -165,12 +159,23 @@ defmodule Prototype.OrganismGenerator do
     OrganismSupervisor.spawn_organism(organism)
   end
 
+  defp adjust_speed(speed) do
+    cond do
+      speed < 50 -> 10
+      speed < 100 -> 8
+      speed < 150 -> 6
+      speed < 200 -> 4
+      true -> 3
+    end
+  end
+
   defp size(strength) do
     cond do
-      strength < 25 -> 5
-      strength < 50 -> 10
-      strength < 75 -> 15
-      true -> 20
+      strength < 50 -> 5
+      strength < 100 -> 10
+      strength < 150 -> 15
+      strength < 200 -> 20
+      true -> 25
     end
   end
 end
